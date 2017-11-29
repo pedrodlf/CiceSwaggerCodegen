@@ -8,6 +8,10 @@ import com.example.generated.model.DetalleEmpleado;
 import com.example.generated.model.Pregunta;
 import com.example.generated.model.ResultadoBusquedaEmpleado;
 
+/**
+ * @author Pedro DLF
+ *
+ */
 @Controller
 public class EmpleadoController implements EmpleadosApi {
 
