@@ -1,276 +1,244 @@
-swagger: '2.0'
+---
+swagger: "2.0"
 info:
-  title: CICE API
-  version: "1.0"
-  description: |
-    **Empleados API**
-
-    Find source code of this API [here](https://mutua-repository)
-# host: localhost:9080
-#basePath: /empleados-api/v1
-# schemes:
-#   - http
-#   - https
-#consumes:
-#  - application/json
-#produces:
-#  - application/json
-#
-
-securityDefinitions:
-  basicAuth:
-    type: basic
-    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
-    
+  description: Parking api
+  version: 0.0.1
+  title: Parking api
 paths:
-
-
-       
-  '/empleados':
+  parking:
     get:
-      summary: Buscar empleados
-      parameters:
-        - name: cookie
-          in: query
-          description: Cookie para bÃºsquedas paginadas
-          type: string
-          format: byte
-          required: false
-        - name: nombre
-          in: query
-          description: Nombre de empleado
-          type: string
-          required: false
-        - name: apellidos
-          in: query
-          description: Apellidos de empleado
-          type: string
-          required: false
-        - name: empresa
-          in: query
-          description: Empresa del empleado
-          type: string
-          required: false
-        - name: unidad
-          in: query
-          description: Unidad en la empresa del empleado
-          type: string
-          required: false
-        - name: telefono
-          in: query
-          description: TelÃ©fono de empleado
-          type: string
-          required: false
-        - name: extension
-          in: query
-          description: ExtensiÃ³n telefÃ³nica
-          type: string
-          required: false
-      responses:
-        '200':
-          description: BÃºsqueda de empleados
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string
-          schema:
-            $ref: '#/definitions/ResultadoBusquedaEmpleado'
-
-  '/empleados/{idEmpleado}':
-     put:
-      summary: Modificar datos Empleado
-      parameters:
-        - name: idEmpleado
-          description: Id de empleado
-          type: string
-          in: path
-          required: true
-        - name: ubicacion
-          in: query
-          description: Oficinas del Empleado
-          type: string
-          required: false
-        - name: localidad
-          in: query
-          description: Localidad del Empleado
-          type: string
-          required: false
-        - name: provincia
-          in: query
-          description: Provincia del Empleado
-          type: string
-          required: false  
-        - name: estadoCivil
-          in: query
-          description: Estado civil del Empleado
-          type: string
-          required: false
-        - name: telefono
-          in: query
-          description: TelÃ©fono de Empleado
-          type: string
-          required: false
-        - name: fechaDeNacimiento
-          in: query
-          description: Fecha de nacimiento
-          type: string
-          required: false 
-        - name: numeroDeCuenta
-          in: query
-          description: numero de cuenta de Empleado
-          type: string
-          required: false  
-      responses:
-        '200':
-          description: Modificar datos Empleado ok 
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string      
-     get:
-      summary: Detalle de empleado
-      parameters:
-        - name: idEmpleado
-          description: Id de empleado
-          type: string
-          in: path
-          required: true
-      responses:
-        '200':
-          description: Detalle de empleado
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string
-          schema:
-            $ref: '#/definitions/DetalleEmpleado'
-  
-  '/empleados/usuario/{usuario}':
-    get:
-      summary: Detalle de empleado
-      parameters:
-        - name: usuario
-          description: Usuario de Mutua
-          type: string
-          in: path
-          required: true
+      summary: Get all parkings
+      description: Get all parkings from database
+      parameters: []
       responses:
         200:
-          description: Detalle de empleado
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string
+          description: OK
           schema:
-            $ref: '#/definitions/DetalleEmpleado'
-        400: 
-          description: Bad Request
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string 
-        500: 
-          description: Error del servidor
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string      
-            
-  '/empleados/{idEmpleado}/preguntas':
+            $ref: '#/definitions/Parkings'
     post:
-      summary: Hacer una pregunta
-      description: Hacer una pregunta
+      summary: Create a new parking
+      description: Add a new parking to database
       parameters:
-        - name: idEmpleado
-          description: Id de empleado
-          type: string
-          in: path
-          required: true
-        - name: Pregunta
-          description: Texto de la pregunta
-          in: body
-          schema:
-            $ref: '#/definitions/Pregunta'
-          required: true
+      - in: body
+        name: Parking
+        description: Parking object
+        required: true
+        schema:
+          $ref: '#/definitions/Parking'
       responses:
         200:
-          description: Pregunta creada
-          headers:
-            X-Mutua-Correlation-Id:
-              type: string
-
-    
+          description: OK
+  parking/{parkingId}:
+    get:
+      summary: Get parking information
+      description: Get parking information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Parking'
+    put:
+      summary: Update parking information
+      description: Update parking information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Parking'
+    delete:
+      summary: Delete parking
+      description: Delete parking information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+  parking/{parkingId}/vehicles:
+    get:
+      summary: Get all cars from a parking
+      description: Get all cars from a parking
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Vehicles'
+    post:
+      summary: Add a car to a parking
+      description: Add car to parking
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+  parking/{parkingId}/vehicles/{vehicleId}:
+    get:
+      summary: Get vehicle information
+      description: Get vehicle information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      - name: vehicleId
+        in: path
+        description: vehicle id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Vehicle'
+    put:
+      summary: Update vehicle information
+      description: Update vehicle information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      - name: vehicleId
+        in: path
+        description: vehicle id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Vehicle'
+    delete:
+      summary: Delete vehicle information
+      description: Delete vehicle information
+      parameters:
+      - name: parkingId
+        in: path
+        description: Parking id
+        required: true
+        type: string
+      - name: vehicleId
+        in: path
+        description: vehicle id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
 definitions:
-
-  
-  Empleado:
+  Parking:
     type: object
     properties:
       id:
+        type: number
+      name:
         type: string
-      nombre:
+      location:
         type: string
-      apellidos:
+      dateCreated:
         type: string
-      avatar:
-        type: string
-        format: byte
-      empresa:
-        type: string
-      unidad:
-        type: string
-      telefono:
-        type: string
-      extension:
-        type: string
-      email:
-        type: string
-        
-  ResultadoBusquedaEmpleado:
+        format: date
+    example:
+      dateCreated: 2000-01-23
+      name: name
+      location: location
+      id: 0.80082819046101150206595775671303272247314453125
+  Parkings:
     type: object
     properties:
-      empleados:
+      Parkings:
         type: array
         items:
-          $ref: "#/definitions/Empleado"
-      cookie:
-        type: string
-        format: byte
-     
-  DetalleEmpleado:
-    type: object
-    allOf: 
-      - $ref: "#/definitions/Empleado"
-      - properties:
-          codigoQR:
-            type: string
-            format: byte
-          dni:
-            type: string
-          fechaNacimiento:
-            type: string
-            format: date
-          estadoCivil:
-            type: string  
-          ubicacion:
-            type: string
-          localidad:
-            type: string
-          provincia:
-            type: string
-          logoempresa:
-            type: string
-          numeroDeHijos:
-            type: number
-          cuentaBancaria:
-            type: string
-  
- 
-          
-  Pregunta:
+          $ref: '#/definitions/Parking'
+    example:
+      Parkings:
+      - dateCreated: 2000-01-23
+        name: name
+        location: location
+        id: 0.80082819046101150206595775671303272247314453125
+      - dateCreated: 2000-01-23
+        name: name
+        location: location
+        id: 0.80082819046101150206595775671303272247314453125
+  Vehicle:
     type: object
     properties:
-      texto:
-        description: Texto de la pregunta
+      id:
+        type: number
+      vehicleId:
         type: string
-      tipoPregunta:
+      vehicleType:
         type: string
-        enum:
-          - nomina
-          - seguroSalud
-     
- 
+      model:
+        type: string
+      brand:
+        type: string
+      placeParked:
+        type: string
+      dateAdded:
+        type: string
+        format: date
+      dateGone:
+        type: string
+        format: date
+    example:
+      placeParked: placeParked
+      dateGone: 2000-01-23
+      model: model
+      id: 0.80082819046101150206595775671303272247314453125
+      vehicleId: vehicleId
+      brand: brand
+      vehicleType: vehicleType
+      dateAdded: 2000-01-23
+  Vehicles:
+    type: object
+    properties:
+      Vehicles:
+        type: array
+        items:
+          $ref: '#/definitions/Vehicle'
+    example:
+      Vehicles:
+      - placeParked: placeParked
+        dateGone: 2000-01-23
+        model: model
+        id: 0.80082819046101150206595775671303272247314453125
+        vehicleId: vehicleId
+        brand: brand
+        vehicleType: vehicleType
+        dateAdded: 2000-01-23
+      - placeParked: placeParked
+        dateGone: 2000-01-23
+        model: model
+        id: 0.80082819046101150206595775671303272247314453125
+        vehicleId: vehicleId
+        brand: brand
+        vehicleType: vehicleType
+        dateAdded: 2000-01-23
